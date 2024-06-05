@@ -84,8 +84,8 @@ export type FormattedCustomersTable = {
   name: string;
   email: string;
   phone_number: string;
-  amount_deposit: number;
-  amount_total: number;
+  amount_deposit: string;
+  amount_total: string;
   rooms: string[];
   status: 'deposit' | 'pending' | 'paid';
   date_from: string;
