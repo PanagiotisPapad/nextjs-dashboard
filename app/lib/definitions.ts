@@ -13,7 +13,14 @@ export type Customer = {
   id: string;
   name: string;
   email: string;
-  image_url: string;
+  amount_deposit: number;
+  amount_total: number;
+  rooms?: string[];
+  status: 'deposit' | 'pending' | 'paid';
+  date_from: string;
+  date_to: string;
+  image_url?: string;
+  phone_number?: string;
 };
 
 export type Invoice = {
@@ -59,6 +66,13 @@ export type CustomersTableType = {
   id: string;
   name: string;
   email: string;
+  phone_number: string;
+  amount_deposit: number;
+  amount_total: number;
+  rooms: string[];
+  status: 'deposit' | 'pending' | 'paid';
+  date_from: string;
+  date_to: string;
   image_url: string;
   total_invoices: number;
   total_pending: number;
@@ -69,10 +83,17 @@ export type FormattedCustomersTable = {
   id: string;
   name: string;
   email: string;
+  phone_number: string;
+  amount_deposit: number;
+  amount_total: number;
+  rooms: string[];
+  status: 'deposit' | 'pending' | 'paid';
+  date_from: string;
+  date_to: string;
   image_url: string;
   total_invoices: number;
-  total_pending: string;
-  total_paid: string;
+  total_pending: number;
+  total_paid: number;
 };
 
 export type CustomerField = {
