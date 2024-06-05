@@ -190,6 +190,13 @@ export async function fetchFilteredCustomers(query: string) {
 		  customers.id,
 		  customers.name,
 		  customers.email,
+      customers.phone_number,
+      customers.amount_deposit,
+      customers.amount_total,
+      customers.rooms,
+      customers.status,
+      customers.date_from,
+      customers.date_to,
 		  customers.image_url,
 		  COUNT(invoices.id) AS total_invoices,
 		  SUM(CASE WHEN invoices.status = 'pending' THEN invoices.amount ELSE 0 END) AS total_pending,
@@ -205,8 +212,8 @@ export async function fetchFilteredCustomers(query: string) {
 
     const customers = data.rows.map((customer) => ({
       ...customer,
-      total_pending: formatCurrency(customer.total_pending),
-      total_paid: formatCurrency(customer.total_paid),
+      amount_deposit: formatCurrency(customer.amount_deposit),
+      amount_total: formatCurrency(customer.amount_total),
     }));
 
     return customers;
