@@ -9,7 +9,7 @@ export default async function Page() {
           { label: 'Customers', href: '/dashboard/customers' },
           {
             label: 'Create Customer',
-            href: 'dashboard/customers/create',
+            href: '/dashboard/customers/create',
             active: true,
           },
         ]}
