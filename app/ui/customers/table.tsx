@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { lusitana } from '@/app/ui/fonts';
 import Search from '@/app/ui/search';
 import { FormattedCustomersTable } from '@/app/lib/definitions';
-import { CreateCustomer } from './buttons';
+import { CreateCustomer, DeleteCustomer, UpdateCustomer } from './buttons';
 import { formatDateToLocal } from '@/app/lib/utils';
 
 export default async function CustomersTable({
@@ -149,6 +149,12 @@ export default async function CustomersTable({
                       </td>
                       <td className="whitespace-nowrap bg-white px-12 py-5 text-sm">
                         {formatDateToLocal(customer.date_to)}
+                      </td>
+                      <td className="whitespace-nowrap py-3 pl-6 pr-3">
+                        <div className="flex justify-end gap-3">
+                          <UpdateCustomer id={customer.id} />
+                          <DeleteCustomer id={customer.id} />
+                        </div>
                       </td>
                     </tr>
                   ))}

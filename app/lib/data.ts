@@ -7,6 +7,7 @@ import {
   LatestInvoiceRaw,
   User,
   Revenue,
+  CustomerForm,
 } from './definitions';
 import { formatCurrency } from './utils';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -162,6 +163,40 @@ export async function fetchInvoiceById(id: string) {
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch invoice.');
+  }
+}
+
+export async function fetchCustomerById(id: string) {
+  noStore();
+  try {
+    const data = await sql<CustomerForm>`
+      SELECT 
+        customers.id,
+        customers.name,
+        customers.email,
+        customers.phone_number,
+        customers.amount_deposit,
+        customers.amount_total,
+        customers.rooms,
+        customers.status,
+        customers.date_from,
+        customers.date_to,
+        customers.image_url
+      FROM customers
+      WHERE customers.id = ${id};
+    `;
+
+    const customer = data.rows.map((customer) => ({
+      ...customer,
+
+      amount_deposit: customer.amount_deposit / 100,
+      amount_total: customer.amount_total / 100,
+    }));
+
+    return customer[0];
+  } catch (error) {
+    console.error('Database error', error);
+    throw new Error('Failed to fetch customer');
   }
 }
 
