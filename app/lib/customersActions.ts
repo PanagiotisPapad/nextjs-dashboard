@@ -7,33 +7,40 @@ import { redirect } from 'next/navigation';
 
 const FormSchema = z.object({
   id: z.string(),
-  name: z.string(),
-  email: z.string(),
-  phone_number: z.string(),
+  name: z.string().min(4, { message: "Please type the customer's name" }),
+  email: z.string().optional(),
+  phone_number: z.string().optional(),
   amount_deposit: z.coerce.number(),
   amount_total: z.coerce.number(),
-  rooms: z.string(),
-  status: z.enum(['deposit', 'pending', 'paid']),
-  date_from: z.string(),
-  date_to: z.string(),
+  rooms: z.string().optional(),
+  status: z.enum(['deposit', 'pending', 'paid'], {
+    invalid_type_error: 'Please select a status.',
+  }),
+  date_from: z.string().min(8, { message: 'Please select a date.' }),
+  date_to: z.string().min(8, { message: 'Please select a date.' }),
   image_url: z.string(),
 });
 
-const CreateInvoice = FormSchema.omit({ id: true, date: true });
+const CreateCustomer = FormSchema.omit({ id: true, date: true });
 
-export async function createCustomer(formData: FormData) {
-  const {
-    name,
-    email,
-    phone_number,
-    amount_deposit,
-    amount_total,
-    rooms,
-    status,
-    date_from,
-    date_to,
-    image_url,
-  } = CreateInvoice.parse({
+export type State = {
+  errors?: {
+    name?: string[];
+    email?: string[];
+    phone_number?: string[];
+    amount_deposit?: string[];
+    amount_total?: string[];
+    rooms?: string[];
+    status?: string[];
+    date_from?: string[];
+    date_to?: string[];
+    image_url?: string[];
+  };
+  message?: string | null;
+};
+
+export async function createCustomer(prevState: State, formData: FormData) {
+  const validatedFields = CreateCustomer.safeParse({
     name: formData.get('name'),
     email: formData.get('email'),
     phone_number: formData.get('phone_number'),
@@ -45,6 +52,27 @@ export async function createCustomer(formData: FormData) {
     date_to: formData.get('date_to'),
     image_url: '/customers/emil-kowalski.png',
   });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Create Customer.',
+    };
+  }
+
+  const {
+    name,
+    email,
+    phone_number,
+    amount_deposit,
+    amount_total,
+    rooms,
+    status,
+    date_from,
+    date_to,
+    image_url,
+  } = validatedFields.data;
+
   const amountDepositInCents = amount_deposit * 100;
   const amountTotalInCents = amount_total * 100;
   const dateFrom = new Date(date_from).toISOString().split('T')[0];
@@ -68,19 +96,12 @@ export async function createCustomer(formData: FormData) {
 
 const UpdateCustomer = FormSchema.omit({ id: true, date: true });
 
-export async function updateCustomer(id: string, formData: FormData) {
-  const {
-    name,
-    email,
-    phone_number,
-    amount_deposit,
-    amount_total,
-    rooms,
-    status,
-    date_from,
-    date_to,
-    image_url,
-  } = UpdateCustomer.parse({
+export async function updateCustomer(
+  id: string,
+  prevState: State,
+  formData: FormData,
+) {
+  const validatedFields = UpdateCustomer.safeParse({
     name: formData.get('name'),
     email: formData.get('email'),
     phone_number: formData.get('phone_number'),
@@ -93,14 +114,26 @@ export async function updateCustomer(id: string, formData: FormData) {
     image_url: '/customers/emil-kowalski.png',
   });
 
-  // if (!validatedFields.success) {
-  //   return {
-  //     errors: validatedFields.error.flatten().fieldErrors,
-  //     message: 'Missing Fields. Failed to Update Invoice.',
-  //   };
-  // }
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Update Customer.',
+    };
+  }
 
-  // const { customerId, amount, status } = validatedFields.data;
+  const {
+    name,
+    email,
+    phone_number,
+    amount_deposit,
+    amount_total,
+    rooms,
+    status,
+    date_from,
+    date_to,
+    image_url,
+  } = validatedFields.data;
+
   const amountDepositInCents = amount_deposit * 100;
   const amountTotalInCents = amount_total * 100;
   const dateFrom = new Date(date_from).toISOString().split('T')[0];

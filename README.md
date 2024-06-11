@@ -1,5 +1,22 @@
-## Next.js App Router Course - Starter
+# Customer Management App
 
-This is the starter template for the Next.js App Router Course. It contains the starting code for the dashboard application.
+This is a customer management app built with Next.js based on Next.js official course. It allows you to manage customer information, including their contact details, payment status, and booking dates.
 
-For more information, see the [course curriculum](https://nextjs.org/learn) on the Next.js Website.
+## Features
+
+- Create, update and delete invoices for existing customers
+- Add, edit, and delete customer information
+- Update payment status
+- View analytics and metrics
+- Responsive design for mobile and desktop
+
+## Usage
+
+You can use the app by visiting the following link:
+
+[Customer Management App](https://nextjs-dashboard-gamma-blond.vercel.app/)
+
+### Test User Credentials
+
+- Email: `user@nextmail.com`
+- Password: `123456`

@@ -1,31 +1,34 @@
 'use client';
 
-import Link from 'next/link';
+import { CustomerForm } from '@/app/lib/definitions';
 import {
   CheckIcon,
   ClockIcon,
   CurrencyDollarIcon,
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 import { Button } from '@/app/ui/button';
 import { updateCustomer } from '@/app/lib/customersActions';
-import { CustomerForm } from '@/app/lib/definitions';
 import { formatDateForInput } from '@/app/lib/utils';
+import { useFormState } from 'react-dom';
 
 export default function EditCustomerForm({
   customer,
 }: {
   customer: CustomerForm;
 }) {
+  const initialState = { message: null, errors: {} };
   const updateCustomerWithId = updateCustomer.bind(null, customer.id);
+  const [state, dispatch] = useFormState(updateCustomerWithId, initialState);
 
   return (
-    <form action={updateCustomerWithId}>
+    <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Customer Name */}
         <div className="mb-4">
           <label htmlFor="name" className="mb-2 block text-sm font-medium">
-            Name
+            Name *
           </label>
           <div className="relative">
             <input
@@ -39,12 +42,12 @@ export default function EditCustomerForm({
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
           <div id="name-error" aria-live="polite" aria-atomic="true">
-            {/* {state.errors?.name &&
+            {state.errors?.name &&
               state.errors.name.map((error: string) => (
                 <p className="mt-2 text-sm text-red-500" key={error}>
                   {error}
                 </p>
-              ))} */}
+              ))}
           </div>
         </div>
 
@@ -168,7 +171,7 @@ export default function EditCustomerForm({
         {/* Rooms */}
         <div className="mb-4">
           <label htmlFor="rooms" className="mb-2 block text-sm font-medium">
-            Rooms
+            Room(s)
           </label>
           <div className="relative">
             <input
@@ -194,11 +197,9 @@ export default function EditCustomerForm({
 
         {/* Status */}
         <fieldset>
-          <legend className="mb-2 block text-sm font-medium">
-            Set the status
-          </legend>
+          <legend className="mb-2 block text-sm font-medium">Status *</legend>
           <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-4">
               <div className="flex items-center">
                 <input
                   id="deposit"
@@ -250,19 +251,19 @@ export default function EditCustomerForm({
             </div>
           </div>
           <div id="status-error" aria-live="polite" aria-atomic="true">
-            {/* {state.errors?.status &&
+            {state.errors?.status &&
               state.errors.status.map((error: string) => (
                 <p className="mt-2 text-sm text-red-500" key={error}>
                   {error}
                 </p>
-              ))} */}
+              ))}
           </div>
         </fieldset>
 
         {/* Dates to Stay */}
         <div className="mb-4">
           <label htmlFor="date_from" className="mb-2 block text-sm font-medium">
-            Date From
+            Date From *
           </label>
           <div className="relative">
             <input
@@ -275,18 +276,18 @@ export default function EditCustomerForm({
             />
           </div>
           <div id="date_from-error" aria-live="polite" aria-atomic="true">
-            {/* {state.errors?.date_from &&
+            {state.errors?.date_from &&
               state.errors.date_from.map((error: string) => (
                 <p className="mt-2 text-sm text-red-500" key={error}>
                   {error}
                 </p>
-              ))} */}
+              ))}
           </div>
         </div>
 
         <div className="mb-4">
           <label htmlFor="date_to" className="mb-2 block text-sm font-medium">
-            Date To
+            Date To *
           </label>
           <div className="relative">
             <input
@@ -299,12 +300,12 @@ export default function EditCustomerForm({
             />
           </div>
           <div id="date_to-error" aria-live="polite" aria-atomic="true">
-            {/* {state.errors?.date_to &&
+            {state.errors?.date_to &&
               state.errors.date_to.map((error: string) => (
                 <p className="mt-2 text-sm text-red-500" key={error}>
                   {error}
                 </p>
-              ))} */}
+              ))}
           </div>
         </div>
 
