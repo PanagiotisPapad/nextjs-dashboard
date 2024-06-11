@@ -50,6 +50,10 @@ export default async function CustomersTable({
                           {customer.phone_number}
                         </p>
                       </div>
+                      <div className="flex justify-end gap-3">
+                        <UpdateCustomer id={customer.id} />
+                        <DeleteCustomer id={customer.id} />
+                      </div>
                     </div>
                     <div className="flex w-full items-center justify-between border-b py-5">
                       <div className="flex w-1/2 flex-col">
@@ -108,6 +112,9 @@ export default async function CustomersTable({
                     </th>
                     <th scope="col" className="px-12 py-5 font-medium">
                       Date To
+                    </th>
+                    <th scope="col" className="px-12 py-5 font-medium">
+                      Actions
                     </th>
                   </tr>
                 </thead>
